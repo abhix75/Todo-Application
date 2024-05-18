@@ -16,4 +16,12 @@ public class TodoController {
         todos.add(new Todo(1,true,"Todo-1",1));
         todos.add(new Todo(2,false,"Todo-2",2));
     }
+
+    @GetMapping("/todos")
+     public List<Todo>getTodos(){
+        return todos;
+    }
+
+
+
 }
