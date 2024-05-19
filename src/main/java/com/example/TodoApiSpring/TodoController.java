@@ -1,6 +1,7 @@
 package com.example.TodoApiSpring;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +28,16 @@ public class TodoController {
         todoList.add(newtodo);
         return ResponseEntity.status(HttpStatus.CREATED).body(newtodo);
     }
+    @GetMapping("/todos/{todoId}")
+    public ResponseEntity<Todo> getTodoById(@PathVariable Long todoId){
+        for(Todo todo:todoList){
+            if(todo.getId() == todoId){
+                return ResponseEntity.ok(todo);
+            }
+        }
+        return ResponseEntity.notFound().build();
+    }
+
 
 
 
