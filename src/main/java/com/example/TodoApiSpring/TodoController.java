@@ -13,6 +13,8 @@ import java.util.List;
 public class TodoController {
     private static List<Todo>todoList;
 
+    public static final String TODO_NOT_FOUND = "Todo Not Found";
+
     public TodoController(){
 
         todoList = new ArrayList<>();
@@ -30,13 +32,13 @@ public class TodoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(newtodo);
     }
     @GetMapping("/{todoId}")
-    public ResponseEntity<Todo> getTodoById(@PathVariable Long todoId){
+    public ResponseEntity<?> getTodoById(@PathVariable Long todoId){
         for(Todo todo:todoList){
             if(todo.getId() == todoId){
                 return ResponseEntity.ok(todo);
             }
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(TODO_NOT_FOUND);
     }
 
 
