@@ -1,5 +1,6 @@
 package com.example.TodoApiSpring;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.RequestEntity;
@@ -12,19 +13,26 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/todos")
 public class TodoController {
+    private TodoService todoService;
+    private TodoService todoService2;
+
     private static List<Todo>todoList;
 
     public static final String TODO_NOT_FOUND = "Todo Not Found";
 
-    public TodoController(){
-
+    public TodoController(@Qualifier("FakeTodoService") TodoService todoService,
+                          @Qualifier("AnotherTodoService" ) TodoService todoService2){
+        this.todoService =todoService;
+        this.todoService2 = todoService2;
         todoList = new ArrayList<>();
         todoList.add(new Todo(1,true,"Todo-1",1));
         todoList.add(new Todo(2,false,"Todo-2",2));
     }
 
     @GetMapping
-     public ResponseEntity<List<Todo>>getTodos(){
+     public ResponseEntity<List<Todo>>getTodos(@RequestParam(required = false) Boolean isCompleted){
+        System.out.println("Incoming Params are : " + isCompleted + todoService.doSomething());
+        System.out.println("Incoming Params are : " + isCompleted + todoService2.doSomething());
         return ResponseEntity.ok(todoList);
     }
     @PostMapping
